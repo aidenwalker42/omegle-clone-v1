@@ -58,8 +58,9 @@ function connectToNewUser(pid, stream) {
   });
 }
 
-socket.on("server message", (msg) => {
+socket.on("dc", (msg) => {
   console.log(msg);
+  document.getElementById("remote-video").srcObject = undefined;
 });
 
 socket.on("other user", (ou) => {

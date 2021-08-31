@@ -29,7 +29,7 @@ io.on("connection", (socket) => {
     console.log(rooms[roomID] && rooms[roomID].includes(socket.id));
     if (rooms[roomID] && rooms[roomID].includes(socket.id)) {
       //if your room already has a person in it, delete room and get new uuid
-      socket.to(otherUser).emit("server message", "User has disconnected");
+      socket.to(otherUser).emit("dc", "User has disconnected");
       delete rooms[roomID];
       roomID = uuidV4();
     }
@@ -56,7 +56,7 @@ io.on("connection", (socket) => {
   });
   socket.on("disconnect", () => {
     console.log("-");
-    socket.to(otherUser).emit("server message", "User has disconnected");
+    socket.to(otherUser).emit("dc", "User has disconnected");
     delete rooms[roomID];
   });
 });
