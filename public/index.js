@@ -33,6 +33,7 @@ socket.on("connect", () => {
 
 function joinRoom() {
   socket.emit("join room", peerID);
+  document.getElementById("remote-video").srcObject = undefined;
   myPeer.on("call", (call) => {
     call.answer(localStream);
 
