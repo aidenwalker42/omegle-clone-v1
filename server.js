@@ -20,9 +20,12 @@ app.get("/", function (req, res) {
 });
 
 const rooms = {};
+let oc = 0;
 
 io.on("connection", (socket) => {
   console.log("+");
+  oc++;
+  socket.emit("oc", oc);
   let roomID = uuidV4();
   let otherUser;
   socket.on("join room", (peerID) => {
@@ -30,6 +33,7 @@ io.on("connection", (socket) => {
     if (rooms[roomID] && rooms[roomID].includes(socket.id)) {
       //if your room already has a person in it, delete room and get new uuid
       socket.to(otherUser).emit("dc", "User has disconnected");
+      otherUser = "";
       delete rooms[roomID];
       roomID = uuidV4();
     }
@@ -51,11 +55,20 @@ io.on("connection", (socket) => {
     socket.emit("uuid", roomID);
     console.log(rooms);
   });
+
   socket.on("send peerid", (id, peerID) => {
     socket.to(id).emit("other peer", peerID);
   });
+
+  socket.on("message", (msg) => {
+    if (otherUser) {
+      socket.to(otherUser).emit("message", msg);
+    }
+  });
+
   socket.on("disconnect", () => {
     console.log("-");
+    oc--;
     socket.to(otherUser).emit("dc", "User has disconnected");
     delete rooms[roomID];
   });

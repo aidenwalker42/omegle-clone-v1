@@ -1,17 +1,174 @@
+html {
+  height: 100%;
+  box-sizing: border-box;
+}
 body {
   margin: 0;
-  padding-bottom: 3rem;
   font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica,
     Arial, sans-serif;
+  background-color: #eeeeee;
+  height: 100%;
+  box-sizing: border-box;
+}
+#title {
+  margin: 0;
+  height: 10%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  flex-direction: column;
+}
+h1 {
+  padding: 0;
+  margin: 0;
+}
+h4 {
+  display: inline;
+}
+#content-container {
+  display: flex;
+  height: 85%;
+  box-sizing: border-box;
+  align-items: center;
 }
 #video-grid {
-  display: grid;
-  grid-template-columns: repeat(auto-fill, 300px);
-  grid-auto-rows: 300px;
+  display: flex;
+  flex-direction: column-reverse;
+  width: 50%;
+  height: 100%;
+  /* max-width: 640px; */
 }
-video {
+#vid {
+  background-color: #1d1d1d;
   width: 100%;
   height: 100%;
-  object-fit: cover;
-  border: 1px solid red;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+video {
+  max-width: 100%;
+  max-height: 100%;
+}
+#msg-container {
+  height: 100%;
+  width: 50%;
+}
+#messages {
+  position: relative;
+  list-style-type: none;
+  margin: 0;
+  padding: 0;
+  background-color: rgb(233, 233, 233);
+  width: 100%;
+  height: 100%;
+  overflow: auto;
+}
+#messages > li {
+  padding: 0.5rem 1rem;
+}
+#messages > li:nth-child(odd) {
+  background: #d2d2d2;
+}
+#you {
+  color: rgb(0, 166, 255);
+}
+#server {
+  color: rgb(14, 171, 111);
+}
+#bottom-bar {
+  background: rgba(0, 0, 0, 0.15);
+  display: flex;
+  height: 5%;
+  backdrop-filter: blur(10px);
+  position: relative;
+  margin: 0;
+}
+#form {
+  display: flex;
+  flex-grow: 1;
+  margin: 0;
+}
+#form > button {
+  background: #d65a31;
+  border: none;
+  padding: 0 2rem;
+  margin: 0.25rem;
+  border-radius: 3px;
+  outline: none;
+  color: #eeeeee;
+}
+#form > button:hover {
+  background: #ad4523;
+}
+#bottom-bar > button {
+  background: rgb(0, 166, 255);
+  border: none;
+  padding: 0 2rem;
+  margin: 0.25rem;
+  border-radius: 3px;
+  outline: none;
+  color: #eeeeee;
+}
+#bottom-bar > button:hover {
+  background: rgb(0, 127, 196);
+}
+#input {
+  border: none;
+  padding: 0 1rem;
+  flex-grow: 1;
+  border-radius: 2rem;
+  margin: 0.25rem;
+  background-color: #393e46;
+  color: #eeeeee;
+  box-sizing: border-box;
+}
+#input:focus {
+  outline: none;
+}
+#room {
+  background-color: #d65a31;
+}
+::placeholder {
+  color: #eeeeee80;
+}
+
+@media only screen and (min-width: 640px) {
+  #msg-container {
+    width: 100%;
+  }
+}
+@media only screen and (max-height: 1133px) {
+  #video-grid {
+    width: 25%;
+  }
+}
+@media only screen and (max-height: 892px) {
+  #video-grid {
+    flex-direction: row;
+  }
+  #video-grid {
+    width: 70%;
+    height: 100%;
+  }
+  #msg-container {
+    width: 30%;
+    height: 100%;
+  }
+}
+@media only screen and (max-width: 992px) {
+  #video-grid {
+    flex-direction: row;
+  }
+  #content-container {
+    flex-direction: column;
+  }
+  #video-grid {
+    width: 100%;
+    height: 30%;
+  }
+  #msg-container {
+    width: 100%;
+    height: 70%;
+  }
 }
