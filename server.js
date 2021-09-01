@@ -25,14 +25,19 @@ let oc = 0;
 io.on("connection", (socket) => {
   console.log("+");
   oc++;
-  socket.emit("oc", oc);
+  io.emit("oc", oc);
   let roomID = uuidV4();
   let otherUser;
   socket.on("join room", (peerID) => {
+    console.log(otherUser);
     console.log(rooms[roomID] && rooms[roomID].includes(socket.id));
     if (rooms[roomID] && rooms[roomID].includes(socket.id)) {
       //if your room already has a person in it, delete room and get new uuid
+      otherUser = rooms[roomID].find((id) => id !== socket.id);
+      console.log("hello???");
       socket.to(otherUser).emit("dc", "User has disconnected");
+      console.log("DC WORK");
+      console.log(otherUser);
       otherUser = "";
       delete rooms[roomID];
       roomID = uuidV4();
@@ -45,6 +50,7 @@ io.on("connection", (socket) => {
       rooms[roomID] = [socket.id]; //create a room object with and array of socket ids
     }
     otherUser = rooms[roomID].find((id) => id !== socket.id);
+    console.log(otherUser + " SET!!!");
     if (otherUser) {
       //if roomID doesnt have my id in it
       console.log("hit");
@@ -69,6 +75,7 @@ io.on("connection", (socket) => {
   socket.on("disconnect", () => {
     console.log("-");
     oc--;
+    io.emit("oc", oc);
     socket.to(otherUser).emit("dc", "User has disconnected");
     delete rooms[roomID];
   });

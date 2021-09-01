@@ -76,6 +76,7 @@ socket.on("connect", () => {
 function joinRoom() {
   serverMsg("Searching for a stranger...");
   waitingOnConnection = true;
+  joined = false;
   socket.emit("join room", peerID);
   document.getElementById("remote-video").srcObject = undefined;
   myPeer.on("call", (call) => {
@@ -116,9 +117,9 @@ socket.on("other user", (ou) => {
 
 socket.on("dc", (msg) => {
   console.log(msg);
+  document.getElementById("remote-video").srcObject = undefined;
   joined = false;
   serverMsg('User has disconnected, click "New Room"');
-  document.getElementById("remote-video").srcObject = undefined;
 });
 
 socket.on("other peer", (pid) => {
