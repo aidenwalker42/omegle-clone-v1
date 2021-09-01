@@ -30,6 +30,7 @@
           <video muted id="local-video" autoplay></video>
         </div>
         <div id="vid">
+          <h6 id="vidoff"></h6>
           <video id="remote-video" autoplay></video>
         </div>
       </div>
@@ -38,6 +39,20 @@
       </div>
     </div>
     <div id="bottom-bar">
+      <div id="emoji">
+        <span onclick="showEmojis()" class="show">😃</span>
+        <span onclick="addEmoji(1)" class="hide">😃</span>
+        <span onclick="addEmoji(2)" class="hide">😁</span>
+        <span onclick="addEmoji(3)" class="hide">😅</span>
+        <span onclick="addEmoji(4)" class="hide">🤣</span>
+        <span onclick="addEmoji(5)" class="hide">😉</span>
+        <span onclick="addEmoji(6)" class="hide">😊</span>
+        <span onclick="addEmoji(7)" class="hide">😇</span>
+        <span onclick="addEmoji(8)" class="hide">😲</span>
+        <span onclick="addEmoji(9)" class="hide">😳</span>
+        <span onclick="addEmoji(10)" class="hide">😥</span>
+        <span onclick="closeEmojis()" class="hide">✖️</span>
+      </div>
       <form id="form" action="">
         <input type="text" id="input" placeholder="Message" />
         <button>Send</button>

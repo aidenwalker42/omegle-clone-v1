@@ -28,7 +28,7 @@ io.on("connection", (socket) => {
   io.emit("oc", oc);
   let roomID = uuidV4();
   let otherUser;
-  socket.on("join room", (peerID) => {
+  socket.on("join room", (peerID, videoOn) => {
     console.log(otherUser);
     console.log(rooms[roomID] && rooms[roomID].includes(socket.id));
     if (rooms[roomID] && rooms[roomID].includes(socket.id)) {
@@ -56,8 +56,8 @@ io.on("connection", (socket) => {
       //if roomID doesnt have my id in it
       console.log("hit");
       console.log(otherUser);
-      socket.emit("other user", otherUser, peerID); //telling ourselves that there is another user
-      socket.to(otherUser).emit("user joined", socket.id, peerID); //telling them that you joined
+      socket.emit("other user", otherUser, peerID, videoOn); //telling ourselves that there is another user
+      socket.to(otherUser).emit("user joined", socket.id, peerID, videoOn); //telling them that you joined
     }
     socket.emit("uuid", roomID);
     console.log(rooms);
@@ -67,10 +67,10 @@ io.on("connection", (socket) => {
     socket.to(id).emit("other peer", peerID);
   });
 
-  socket.on("message", (msg) => {
+  socket.on("message", (msg, servermsg) => {
     socket
       .to(rooms[roomID].find((id) => id !== socket.id))
-      .emit("message", msg);
+      .emit("message", msg, servermsg);
   });
 
   socket.on("disconnect", () => {

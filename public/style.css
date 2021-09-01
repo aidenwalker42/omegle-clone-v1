@@ -26,6 +26,11 @@ h4 {
   display: inline;
   color: #d65a31;
 }
+h6 {
+  display: inline;
+  position: fixed;
+  color: crimson;
+}
 #content-container {
   display: flex;
   height: 85%;
@@ -132,6 +137,24 @@ video {
 }
 ::placeholder {
   color: #eeeeee80;
+}
+
+#emoji {
+  display: flex;
+  align-items: center;
+}
+span {
+  padding: 4px;
+  cursor: grab;
+}
+span:hover {
+  background: #858585;
+}
+.hide {
+  display: none;
+}
+.show {
+  display: inline;
 }
 
 @media only screen and (min-width: 640px) {

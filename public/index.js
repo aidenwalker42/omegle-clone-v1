@@ -15,6 +15,7 @@ let onlineCounter = document.querySelector("h3");
 
 let joined = false;
 let waitingOnConnection = false;
+let videoOn;
 
 const myPeer = new Peer();
 
@@ -42,8 +43,12 @@ form.addEventListener("submit", function (e) {
   }
 });
 
-socket.on("message", function (msg) {
-  strangerMsg(msg);
+socket.on("message", function (msg, servermsg) {
+  if (servermsg) {
+    serverMsg(msg);
+  } else {
+    strangerMsg(msg);
+  }
 });
 
 myPeer.on("open", (id) => {
@@ -67,9 +72,26 @@ socket.on("connect", () => {
       console.log("Got MediaStream:", stream);
       localStream = stream;
       document.getElementById("local-video").srcObject = localStream;
+      if (!localStream.active) {
+        videoOn = false;
+        console.log("No Video!");
+        serverMsg(
+          "Webcam not detected, please refresh page and make sure your webcam permission are correctly set! (Chrome works best)"
+        );
+        localStream = {};
+        console.log("localStream: " + localStream);
+      } else {
+        videoOn = true;
+        console.log("Video is on");
+      }
     })
     .catch((error) => {
       console.error("Error accessing media devices.", error);
+      videoOn = false;
+      console.log("No Video!");
+      serverMsg(
+        "Webcam not detected, please refresh page and make sure your webcam permission are correctly set! (Chrome works best)"
+      );
     });
 });
 
@@ -77,7 +99,7 @@ function joinRoom() {
   serverMsg("Searching for a stranger...");
   waitingOnConnection = true;
   joined = false;
-  socket.emit("join room", peerID);
+  socket.emit("join room", peerID, videoOn);
   document.getElementById("remote-video").srcObject = undefined;
   myPeer.on("call", (call) => {
     call.answer(localStream);
@@ -88,16 +110,31 @@ function joinRoom() {
   });
 }
 
-socket.on("user joined", (id, pid) => {
+socket.on("user joined", (id, pid, vOn) => {
   //host
   otherPeerID = pid;
   console.log("User connected: " + id + " " + pid);
   socket.emit("send peerid", id, peerID);
-  connectToNewUser(pid, localStream);
   theMessages.innerHTML = "";
+  try {
+    connectToNewUser(pid, localStream);
+  } catch (e) {
+    console.log("Error connecting to User: " + e);
+    serverMsg(
+      "Media connection not established due to your webcam having an issue, Chat only."
+    );
+    socket.emit(
+      "message",
+      "Media connection not established due to stranger having a webcam error, He cannot see or hear you, Chat only.",
+      true
+    );
+  }
   serverMsg("Connected to a stranger, say hi!");
   joined = true;
   waitingOnConnection = false;
+  if (!vOn) {
+    document.getElementById("vidoff").innerHTML = "Stranger has no video";
+  }
   otherUser = id; //handshake
 });
 function connectToNewUser(pid, stream) {
@@ -106,12 +143,15 @@ function connectToNewUser(pid, stream) {
     document.getElementById("remote-video").srcObject = theStream;
   });
 }
-socket.on("other user", (ou) => {
+socket.on("other user", (ou, vOn) => {
   theMessages.innerHTML = "";
   console.log("you joined: " + ou);
   joined = true;
   waitingOnConnection = false;
   serverMsg("Connected to a stranger, say hi!");
+  if (!vOn) {
+    document.getElementById("vidoff").innerHTML = "Stranger has no video";
+  }
   otherUser = ou;
 });
 
@@ -120,6 +160,7 @@ socket.on("dc", (msg) => {
   document.getElementById("remote-video").srcObject = undefined;
   joined = false;
   serverMsg('User has disconnected, click "New Room"');
+  document.getElementById("vidoff").innerHTML = "";
 });
 
 socket.on("other peer", (pid) => {
@@ -140,4 +181,57 @@ function strangerMsg(msg) {
   item.innerHTML = "<h4>Stranger: </h4>" + msg;
   messages.appendChild(item);
   theMessages.scrollTo(0, theMessages.scrollHeight);
+}
+
+//emoji handlers
+let allEmojis = document.querySelectorAll("span");
+
+function showEmojis() {
+  //change class of the span elements to show
+  for (let i = 0; i < allEmojis.length; i++) {
+    allEmojis[i].className = "show";
+  }
+  allEmojis[0].className = "hide";
+}
+
+function addEmoji(emoji) {
+  switch (emoji) {
+    case 1:
+      input.value += "😃";
+      break;
+    case 2:
+      input.value += "😁";
+      break;
+    case 3:
+      input.value += "😅";
+      break;
+    case 4:
+      input.value += "🤣";
+      break;
+    case 5:
+      input.value += "😉";
+      break;
+    case 6:
+      input.value += "😊";
+      break;
+    case 7:
+      input.value += "😇";
+      break;
+    case 8:
+      input.value += "😲";
+      break;
+    case 9:
+      input.value += "😳";
+      break;
+    case 10:
+      input.value += "😥";
+      break;
+  }
+}
+
+function closeEmojis() {
+  for (let i = 0; i < allEmojis.length; i++) {
+    allEmojis[i].className = "hide";
+  }
+  allEmojis[0].className = "show";
 }
