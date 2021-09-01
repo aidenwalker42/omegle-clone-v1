@@ -33,9 +33,10 @@ io.on("connection", (socket) => {
     console.log(rooms[roomID] && rooms[roomID].includes(socket.id));
     if (rooms[roomID] && rooms[roomID].includes(socket.id)) {
       //if your room already has a person in it, delete room and get new uuid
-      otherUser = rooms[roomID].find((id) => id !== socket.id);
       console.log("hello???");
-      socket.to(otherUser).emit("dc", "User has disconnected");
+      socket
+        .to(rooms[roomID].find((id) => id !== socket.id))
+        .emit("dc", "User has disconnected");
       console.log("DC WORK");
       console.log(otherUser);
       otherUser = "";
@@ -67,9 +68,9 @@ io.on("connection", (socket) => {
   });
 
   socket.on("message", (msg) => {
-    if (otherUser) {
-      socket.to(otherUser).emit("message", msg);
-    }
+    socket
+      .to(rooms[roomID].find((id) => id !== socket.id))
+      .emit("message", msg);
   });
 
   socket.on("disconnect", () => {
