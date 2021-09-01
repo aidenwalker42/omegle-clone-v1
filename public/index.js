@@ -95,9 +95,9 @@ socket.on("user joined", (id, pid) => {
   socket.emit("send peerid", id, peerID);
   connectToNewUser(pid, localStream);
   theMessages.innerHTML = "";
+  serverMsg("Connected to a stranger, say hi!");
   joined = true;
   waitingOnConnection = false;
-  serverMsg("Connected to a stranger, say hi!");
   otherUser = id; //handshake
 });
 function connectToNewUser(pid, stream) {
@@ -107,8 +107,8 @@ function connectToNewUser(pid, stream) {
   });
 }
 socket.on("other user", (ou) => {
-  console.log("you joined: " + ou);
   theMessages.innerHTML = "";
+  console.log("you joined: " + ou);
   joined = true;
   waitingOnConnection = false;
   serverMsg("Connected to a stranger, say hi!");

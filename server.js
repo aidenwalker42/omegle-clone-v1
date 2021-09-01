@@ -77,6 +77,13 @@ io.on("connection", (socket) => {
     console.log("-");
     oc--;
     io.emit("oc", oc);
+    console.log("OU + " + otherUser);
+    try {
+      otherUser = rooms[roomID].find((id) => id !== socket.id);
+    } catch {
+      console.log("riperror");
+    }
+    console.log("OU " + otherUser);
     socket.to(otherUser).emit("dc", "User has disconnected");
     delete rooms[roomID];
   });
