@@ -166,6 +166,16 @@ span:hover {
   #video-grid {
     width: 25%;
   }
+  #title {
+    flex-direction: row;
+    justify-content: space-between;
+  }
+  h1 {
+    font-size: 1.5rem;
+  }
+  h3 {
+    font-size: 1rem;
+  }
 }
 @media only screen and (max-height: 892px) {
   #video-grid {
