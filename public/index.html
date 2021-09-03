@@ -4,60 +4,47 @@
     <meta charset="UTF-8" />
     <meta http-equiv="X-UA-Compatible" content="IE=edge" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <script
-      defer
-      src="https://unpkg.com/peerjs@1.3.1/dist/peerjs.min.js"
-    ></script>
-    <script src="https://cdn.socket.io/3.1.3/socket.io.min.js"></script>
-    <script defer src="index.js"></script>
-    <link rel="preconnect" href="https://fonts.googleapis.com" />
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
-    <link
-      href="https://fonts.googleapis.com/css2?family=VT323&display=swap"
-      rel="stylesheet"
-    />
-    <link rel="stylesheet" href="style.css" />
-    <title>Omegle Chat</title>
+    <link rel="stylesheet" href="index.css" />
+    <title>Document</title>
   </head>
   <body>
     <div id="title">
       <h1>Aiden's Omegle Clone</h1>
-      <h3>Users online: 0</h3>
     </div>
-    <div id="content-container">
-      <div id="video-grid">
-        <div id="vid">
-          <video muted id="local-video" autoplay playsinline></video>
-        </div>
-        <div id="vid">
-          <h6 id="vidoff"></h6>
-          <video id="remote-video" autoplay playsinline></video>
-        </div>
-      </div>
-      <div id="msg-container">
-        <ul id="messages"></ul>
-      </div>
+    <div id="content">
+      <p>
+        Welcome to my Omegle Clone! This website was made by using a combination
+        of web sockets and webRTC to establish a connection between two people,
+        the source code can be found
+        <a href="https://github.com/aidenwalker42/omegle-clone-v1">here.</a>
+      </p>
+      <p>
+        <b>
+          Video chat requires you to have a media device connected, also mobile
+          is not supported currently.</b
+        >
+        If you are having trouble connecting to your webcam make sure your
+        browser is not blocking access to media devices. If you do not have a
+        webcam feel free to join the text only chat!
+      </p>
     </div>
-    <div id="bottom-bar">
-      <div id="emoji">
-        <span onclick="showEmojis()" class="show">😃</span>
-        <span onclick="addEmoji(1)" class="hide">😃</span>
-        <span onclick="addEmoji(2)" class="hide">😁</span>
-        <span onclick="addEmoji(3)" class="hide">😅</span>
-        <span onclick="addEmoji(4)" class="hide">🤣</span>
-        <span onclick="addEmoji(5)" class="hide">😉</span>
-        <span onclick="addEmoji(6)" class="hide">😊</span>
-        <span onclick="addEmoji(7)" class="hide">😇</span>
-        <span onclick="addEmoji(8)" class="hide">😲</span>
-        <span onclick="addEmoji(9)" class="hide">😳</span>
-        <span onclick="addEmoji(10)" class="hide">😥</span>
-        <span onclick="closeEmojis()" class="hide">✖️</span>
-      </div>
-      <form id="form" action="">
-        <input type="text" id="input" placeholder="Message" />
-        <button>Send</button>
-      </form>
-      <button id="room" onclick="joinRoom()">New Room</button>
+    <h3>Check your webcam</h3>
+    <h5>
+      Media Device Status:
+      <span id="status" class="notactive">Not Connected</span>
+    </h5>
+    <div id="video">
+      <video id="webcam" autoplay playsinline></video>
     </div>
+    <div id="activate-media">
+      <button onclick="activateWebcam()">Activate Media</button>
+    </div>
+    <h2>Start Chatting!</h2>
+    <div id="chats">
+      <button id="Text Chat" onclick="textChat()">Text Chat</button>
+      <button id="Text Chat" onclick="testMedia()">Video Chat</button>
+    </div>
+    <p id="media-error" class="error"></p>
+    <script src="home.js"></script>
   </body>
 </html>
