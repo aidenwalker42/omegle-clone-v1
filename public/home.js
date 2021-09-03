@@ -3,6 +3,11 @@ let status = document.getElementById("status");
 let theStream;
 let errorMessage = document.getElementById("media-error");
 function activateWebcam() {
+  navigator.getUserMedia =
+    navigator.getUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.msGetUserMedia;
   const constraints = {
     video: {
       width: {
@@ -34,6 +39,11 @@ function activateWebcam() {
     });
 }
 function testMedia() {
+  navigator.getUserMedia =
+    navigator.getUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.msGetUserMedia;
   const constraints = {
     video: true,
     audio: true,

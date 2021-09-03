@@ -56,6 +56,11 @@ myPeer.on("open", (id) => {
 });
 
 socket.on("connect", () => {
+  navigator.getUserMedia =
+    navigator.getUserMedia ||
+    navigator.mozGetUserMedia ||
+    navigator.webkitGetUserMedia ||
+    navigator.msGetUserMedia;
   const constraints = {
     video: {
       width: {
